@@ -43,7 +43,7 @@ namespace TruckVisitTests
             var result = _controller.GetAllTruckVisits();
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnedTruckVisits = Assert.IsAssignableFrom<IEnumerable<TruckVisit>>(okResult.Value);
             Assert.Equal(3, returnedTruckVisits.Count());
         }
@@ -58,14 +58,14 @@ namespace TruckVisitTests
                 new() {ActivityType = VisitActivity.ActivityType.Delivery, UnitNum= "WXYZ6789"}
             };
 
-            var invalidRequest = new CreateTruckVisitRequest { Status = TruckVisit.TruckVisitStatus.Completed, Activities = activities, LicensePlate = "ABCD 123" };
+            var invalidRequest = new CreateTruckVisitRequest { Status = TruckVisit.TruckVisitStatus.Completed, Activities = activities, LicensePlate = "ABCD 123" }; // Invalid reason: Missing required params
 
             // Act
             var result = _controller.CreateTruckVisit(invalidRequest);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Invalid request", badRequestResult.Value);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Driver does not exist. Create a new Driver first.", badRequestResult.Value);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace TruckVisitTests
             var result = _controller.CreateTruckVisit(validRequest);
 
             // Assert
-            var createdResult = Assert.IsType<ObjectResult>(result);
+            var createdResult = Assert.IsType<ObjectResult>(result.Result);
             Assert.Equal(201, createdResult.StatusCode);
 
             var createdTruckVisit = Assert.IsType<TruckVisit>(createdResult.Value);
