@@ -1,0 +1,36 @@
+@Truck_Visit_Management_API_HostAddress = http://localhost:5003
+
+### 
+GET {{Truck_Visit_Management_API_HostAddress}}/api/TruckVisit
+Accept: application/json
+
+
+###
+POST {{Truck_Visit_Management_API_HostAddress}}/api/TruckVisit
+Content-Type: application/json
+Accept: application/json
+{
+  "Status": 0,
+  "LicensePlate": "DF12 DSL",
+  "TruckDriver": {
+    "FirstName": "John",
+    "LastName": "Doe"
+  },
+  "Activities": [
+    {
+      "Type": 0,
+      "UnitNumber": "DFDS12345"
+    }
+  ],
+  "UpdatedBy": "System",
+  "CreatedBy": "System"
+}
+
+
+###
+PUT {{Truck_Visit_Management_API_HostAddress}}/api/TruckVisit/1/status
+Content-Type: application/json
+Accept: application/json
+{
+  "newStatus": "AtGate"
+}
